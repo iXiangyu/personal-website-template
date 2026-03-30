@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TodayDock 产品需求文档</title>
+  <style>
+    :root {
+      --bg: #f3ede5;
+      --panel: rgba(255, 250, 244, 0.82);
+      --panel-strong: rgba(255, 251, 246, 0.92);
+      --line: rgba(131, 108, 83, 0.14);
+      --line-strong: rgba(131, 108, 83, 0.24);
+      --text: #473c32;
+      --muted: #7c6a5b;
+      --accent: #9f8469;
+      --accent-soft: rgba(159, 132, 105, 0.12);
+      --green: #9dbf95;
+      --amber: #d2b27c;
+      --red: #c4877d;
+      --shadow: 0 24px 60px rgba(102, 80, 58, 0.11);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max-width: 1540px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255,255,255,0.82), transparent 22%),
+        radial-gradient(circle at 88% 12%, rgba(243, 229, 210, 0.72), transparent 22%),
+        radial-gradient(circle at 74% 86%, rgba(197, 219, 193, 0.24), transparent 20%),
+        linear-gradient(180deg, #f5efe7 0%, #ece4da 42%, #e6ddd2 100%);
+      letter-spacing: 0.01em;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.42;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(circle at center, black 42%, transparent 92%);
+    }
+
+    .layout {
+      width: min(calc(100% - 32px), var(--max-width));
+      margin: 18px auto 38px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .glass {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.5);
+      backdrop-filter: blur(24px) saturate(120%);
+      -webkit-backdrop-filter: blur(24px) saturate(120%);
+      box-shadow: var(--shadow);
+    }
+
+    aside {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      padding: 22px 18px;
+      border-radius: var(--radius-xl);
+      display: grid;
+      gap: 18px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .meta h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .meta p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .chips {
+      display: grid;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .chips span {
+      display: block;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.4);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    nav {
+      display: grid;
+      gap: 6px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      transition: 150ms ease;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,0.42);
+      border-color: var(--line);
+      transform: translateX(2px);
+    }
+
+    .side-note {
+      margin-top: auto;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.36);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    main {
+      display: grid;
+      gap: 20px;
+    }
+
+    section {
+      padding: 26px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    h2, h3, h4 {
+      margin: 0;
+      letter-spacing: -0.04em;
+    }
+
+    section > h3 {
+      font-size: 26px;
+      margin-bottom: 16px;
+    }
+
+    p, li, td, th {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #655647;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .hero {
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.88), rgba(255,248,241,0.72)),
+        radial-gradient(circle at 10% 12%, rgba(255,255,255,0.92), transparent 24%),
+        radial-gradient(circle at 86% 16%, rgba(240, 228, 213, 0.86), transparent 28%);
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .hero h2 {
+      font-size: 42px;
+      line-height: 1.05;
+    }
+
+    .status {
+      white-space: nowrap;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.52);
+      border: 1px solid rgba(255,255,255,0.7);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.06fr 0.94fr;
+      gap: 18px;
+    }
+
+    .summary {
+      display: grid;
+      gap: 12px;
+    }
+
+    .summary p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .tag {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.45);
+      border: 1px solid rgba(255,255,255,0.66);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .screenshot-card {
+      padding: 18px;
+      border-radius: 26px;
+      background: rgba(255,250,244,0.76);
+      border: 1px solid rgba(255,255,255,0.56);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
+      display: grid;
+      gap: 14px;
+    }
+
+    .screenshot-card h4 {
+      font-size: 16px;
+    }
+
+    .window {
+      min-height: 380px;
+      border-radius: 28px;
+      padding: 16px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.7), rgba(250,245,239,0.56));
+      border: 1px solid rgba(255,255,255,0.76);
+      box-shadow: 0 22px 38px rgba(118, 92, 64, 0.12);
+      display: grid;
+      gap: 14px;
+    }
+
+    .traffic {
+      display: flex;
+      gap: 10px;
+      padding-left: 6px;
+    }
+
+    .traffic span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(199, 180, 158, 0.75);
+      display: block;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 0.88fr 1.14fr 0.88fr;
+      gap: 14px;
+      min-height: 312px;
+    }
+
+    .col {
+      border-radius: 22px;
+      padding: 14px;
+      background: rgba(255,255,255,0.44);
+      border: 1px solid rgba(139, 112, 80, 0.12);
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .col-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #5f5043;
+    }
+
+    .shot-card {
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,251,246,0.9);
+      border: 1px solid rgba(140, 113, 81, 0.12);
+      box-shadow: 0 10px 20px rgba(117, 92, 64, 0.07);
+      font-size: 12px;
+      line-height: 1.6;
+      color: #655647;
+    }
+
+    .shot-card.long {
+      min-height: 138px;
+    }
+
+    .shot-progress {
+      margin-top: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(109, 93, 75, 0.15);
+      overflow: hidden;
+    }
+
+    .shot-progress span {
+      display: block;
+      height: 100%;
+      width: 38%;
+      background: linear-gradient(90deg, #9fc292, #88b384);
+      border-radius: inherit;
+    }
+
+    .grid-2, .grid-3 {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card {
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255,251,247,0.72);
+      border: 1px solid rgba(255,255,255,0.5);
+      box-shadow: 0 14px 30px rgba(112, 88, 62, 0.08);
+    }
+
+    .card h4 {
+      font-size: 17px;
+      margin-bottom: 12px;
+    }
+
+    .metric {
+      display: grid;
+      gap: 10px;
+    }
+
+    .metric .value {
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -0.06em;
+      color: #4f4134;
+    }
+
+    .metric .desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .definition {
+      display: grid;
+      gap: 12px;
+    }
+
+    .def-row {
+      display: grid;
+      grid-template-columns: 170px minmax(0, 1fr);
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.36);
+      border: 1px solid var(--line);
+    }
+
+    .def-row strong {
+      color: #53463b;
+    }
+
+    .flow-block {
+      display: grid;
+      gap: 14px;
+    }
+
+    .flow-row {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .step {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.42);
+      border: 1px solid var(--line);
+      min-height: 122px;
+      position: relative;
+    }
+
+    .step::after {
+      content: "→";
+      position: absolute;
+      right: -9px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(128, 104, 78, 0.28);
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .step:last-child::after {
+      display: none;
+    }
+
+    .step .num {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .step strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 6px;
+      color: #54463a;
+    }
+
+    .matrix {
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255,252,248,0.76);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(135, 108, 80, 0.1);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6d5d4f;
+      background: rgba(255,255,255,0.45);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .p0 { color: #5d4e40; font-weight: 700; }
+    .danger { color: #9a5f57; font-weight: 700; }
+
+    .proto-diagram {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .proto-box {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.4);
+      border: 1px solid var(--line);
+      position: relative;
+      min-height: 94px;
+    }
+
+    .proto-box::after {
+      content: "→";
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(128, 104, 78, 0.28);
+      font-size: 22px;
+    }
+
+    .proto-box:last-child::after {
+      display: none;
+    }
+
+    .diagram-section .section-copy {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+      max-width: 1080px;
+    }
+
+    .diagram-surface {
+      background: rgba(255,251,246,0.88);
+      border: 1px solid rgba(131, 108, 83, 0.18);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.56);
+      overflow: auto;
+    }
+
+    .diagram-notes {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .diagram-note {
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.42);
+    }
+
+    .diagram-note h4 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .diagram-note p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .diagram-legend {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .diagram-legend-item {
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.36);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .diagram-legend-item strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .roadmap {
+      display: grid;
+      gap: 12px;
+    }
+
+    .phase {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 14px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.4);
+      border: 1px solid var(--line);
+    }
+
+    .phase-tag {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: var(--accent-soft);
+      color: #715c48;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .foot {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      padding-top: 4px;
+    }
+
+    @media (max-width: 1220px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { position: static; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .flow-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .proto-diagram { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 860px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .workspace, .flow-row, .proto-diagram { grid-template-columns: 1fr; }
+      .def-row, .phase { grid-template-columns: 1fr; }
+      .hero h2 { font-size: 34px; }
+      .hero-top { flex-direction: column; }
+      .diagram-notes, .diagram-legend { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      fontFamily: '"PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif',
+      flowchart: {
+        curve: 'basis',
+        nodeSpacing: 30,
+        rankSpacing: 44,
+        htmlLabels: true
+      },
+      themeVariables: {
+        background: '#fffaf2',
+        primaryColor: '#f8efe0',
+        primaryTextColor: '#473c32',
+        primaryBorderColor: '#c9baa3',
+        lineColor: '#9f8469',
+        secondaryColor: '#f2eadf',
+        tertiaryColor: '#fbf7f0',
+        clusterBkg: '#f8f2e8',
+        clusterBorder: '#cfbea6',
+        edgeLabelBackground: '#fffaf2',
+        fontSize: '14px'
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="glass">
+      <div class="meta">
+        <div class="eyebrow">Product Requirements Document</div>
+        <h1>TodayDock PRD</h1>
+        <p>一份按正式产品文档逻辑整理的 HTML 评审稿。页面中直接展开 PRD 内容、关键流程和界面参考，不再用路径或占位块替代内容本身。</p>
+      </div>
+
+      <div class="chips">
+        <span><strong>文档状态：</strong>Draft</span>
+        <span><strong>产品阶段：</strong>云端账号版内测前</span>
+        <span><strong>阅读方式：</strong>用于评审，不是宣传页</span>
+      </div>
+
+      <nav>
+        <a href="#summary">1. 执行摘要</a>
+        <a href="#problem">2. 问题定义</a>
+        <a href="#principles">3. 产品愿景与原则</a>
+        <a href="#goals">4. 目标与指标</a>
+        <a href="#logic-overview">5. 产品逻辑总图</a>
+        <a href="#logic-flow">6. 关键用户流程图</a>
+        <a href="#scope">7. 范围定义</a>
+        <a href="#flows">8. 用户流程</a>
+        <a href="#requirements">9. 功能需求</a>
+        <a href="#nfr">10. 非功能要求</a>
+        <a href="#prototype">11. 原型与技术方案</a>
+        <a href="#risks">12. 风险与缓解</a>
+        <a href="#launch">13. 上线与 MVP</a>
+        <a href="#questions">14. Open Questions</a>
+      </nav>
+
+      <div class="side-note">
+        这份展示稿直接展开了产品定义内容。你现在看到的每一块都属于文档正文，不再引用任何本地路径作为“查看入口”。
+      </div>
+    </aside>
+
+    <main>
+      <section class="hero glass" id="summary">
+        <div class="hero-top">
+          <div>
+            <div class="eyebrow">1. Executive Summary</div>
+            <h2>TodayDock 是一款常驻桌面的个人工作台，目标是在一个统一空间中承接任务与思绪。</h2>
+          </div>
+          <div class="status">Pre-Launch Internal PRD</div>
+        </div>
+
+        <div class="hero-grid">
+          <div class="summary">
+            <p>TodayDock 面向在 Mac 上长时间工作的个人知识工作者，用于承接四类高频信息：当天必须完成的事项、想做但不一定当天执行的事项、需要持续数天或数周推进的长期任务，以及无法直接归入待办的情绪、灵感与经验记录。</p>
+            <p>产品核心判断是：用户并不缺工具，而是缺一个既足够轻、又能够长期承接真实工作流的桌面层入口。因此，TodayDock 不被定义为协作型任务平台，也不只是便签集合，而是一款“轻交互、高可见、云端同步”的桌面工作台。</p>
+            <p>本期工作目标是交付首个可内测的云端账号版本，验证用户是否愿意持续把 TodayDock 放在桌面使用，以及 Ought / Want / 长期任务 / Mind Pad 的结构是否成立。</p>
+            <div class="tag-row">
+              <span class="tag">桌面工作台</span>
+              <span class="tag">单用户私有数据</span>
+              <span class="tag">云端唯一真相</span>
+              <span class="tag">长期任务节点拆解</span>
+              <span class="tag">Mind Pad</span>
+            </div>
+          </div>
+
+          <div class="screenshot-card">
+            <h4>当前界面基线展示</h4>
+            <div class="window">
+              <div class="traffic"><span></span><span></span><span></span></div>
+              <div class="workspace">
+                <div class="col">
+                  <div class="col-head"><span>Ought</span><span>-</span></div>
+                  <div class="shot-card">把开题汇报再理顺一遍</div>
+                  <div class="shot-card long">
+                    秋招准备
+                    <div class="shot-progress"><span></span></div>
+                    <div style="margin-top:10px;color:#8d7a68;font-size:12px;">已完成 1/3 个节点</div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="col-head"><span>Mind Pad</span><span>情绪 / 灵感 / 经验</span></div>
+                  <div class="shot-card">今天慢一点，也没有关系。</div>
+                  <div class="shot-card">做一块贴在桌边的小地方。</div>
+                  <div class="shot-card">时间线与任务在同一工作台内切换。</div>
+                </div>
+                <div class="col">
+                  <div class="col-head"><span>Want</span><span>+</span></div>
+                  <div class="shot-card">学一套新的排版风格</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass" id="problem">
+        <h3>2. 问题定义</h3>
+        <div class="definition">
+          <div class="def-row">
+            <strong>目标用户</strong>
+            <div>经常在 Mac 上长时间工作的个人用户；对任务工具有使用习惯，但不希望打开复杂项目管理软件；同时需要记录任务、拆解长期事项，并保留灵感、经验与情绪痕迹。</div>
+          </div>
+          <div class="def-row">
+            <strong>现有痛点</strong>
+            <div>现有工具将待办、长期事项、便签、灵感与经验分散在不同应用中。结果是重要事项被埋没，长期任务难以轻量拆解，非任务型信息难以沉淀，用户需要在“轻记录”和“结构化管理”之间频繁切换。</div>
+          </div>
+          <div class="def-row">
+            <strong>场景机会</strong>
+            <div>桌面常驻类产品具备天然的低打扰优势；如果产品既能停留在视线附近，又不会像后台系统一样高压存在，就有机会成为用户每天自然回访的一层工作台。</div>
+          </div>
+          <div class="def-row">
+            <strong>为什么现在做</strong>
+            <div>当前已具备高保真原型与基础工程实现，账号与云端能力也开始建立，适合从“可运行原型”推进到“真实产品验证”阶段。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass" id="principles">
+        <h3>3. 产品愿景与设计原则</h3>
+        <div class="grid-2">
+          <div class="card">
+            <h4>产品愿景</h4>
+            <p>把散落在一天里的事情，轻轻收回桌面上的一个地方；等用户再次打开，它们仍在原来的位置，继续向前。</p>
+          </div>
+          <div class="card">
+            <h4>设计原则</h4>
+            <ul>
+              <li><strong>轻，但不浅：</strong>界面克制，信息结构清晰，不能因为轻量而削弱管理能力。</li>
+              <li><strong>一屏完成核心决策：</strong>查看、记录、编辑、拆解、切换视角等核心动作应在主界面内完成。</li>
+              <li><strong>任务与思绪并存：</strong>产品不仅承接待办，也承接灵感、经验与情绪。</li>
+              <li><strong>云端唯一真相：</strong>登录用户看到的内容必须以云端为准。</li>
+              <li><strong>常驻但不喧闹：</strong>产品要适合长期停留在桌面环境中，不应像管理后台一样抢占注意力。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass" id="goals">
+        <h3>4. 目标与成功指标</h3>
+        <div class="grid-3">
+          <div class="card metric">
+            <div class="value">目标 A</div>
+            <div class="desc">完成首个可内测的 TodayDock 云端账号版本。</div>
+          </div>
+          <div class="card metric">
+            <div class="value">目标 B</div>
+            <div class="desc">验证 Ought / Want / 长期任务 / Mind Pad 的信息结构是否成立。</div>
+          </div>
+          <div class="card metric">
+            <div class="value">目标 C</div>
+            <div class="desc">验证玻璃风桌面 UI 是否足以构成产品差异点。</div>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:16px;">
+          <div class="card">
+            <h4>核心成功指标</h4>
+            <ul>
+              <li>注册完成率</li>
+              <li>首次登录后 10 分钟内完成至少 1 条创建操作的用户占比</li>
+              <li>7 日内至少 3 次打开应用的用户占比</li>
+              <li>新用户模板后的首次编辑率</li>
+              <li>忘记密码、退出登录、注销账户等链路成功率</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>质量指标</h4>
+            <ul>
+              <li>登录成功率 &gt; 95%</li>
+              <li>云端同步初始化成功率 &gt; 98%</li>
+              <li>核心页面无阻断级 UI 错位</li>
+              <li>常驻空闲 CPU 接近 0，内存处于桌面应用可接受区间</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass diagram-section" id="logic-overview">
+        <h3>5. 产品逻辑总图</h3>
+        <p class="section-copy">
+          TodayDock 的产品定义，不成立于单个功能，而成立于结构、形态与数据规则的共同作用。产品以桌面为入口，
+          把任务、长期目标、思绪记录与时间维度组织进同一工作台，再由账号与云端规则保证这份上下文在不同设备上保持一致。
+        </p>
+        <div class="diagram-surface">
+          <div class="mermaid">
+flowchart TD
+    A["用户核心问题<br/>事情很多，但主线容易丢失<br/>任务与思绪被迫分散在不同工具里"] --> B["产品目标<br/>把用户当天最重要的事情<br/>持续放在桌面可回到的位置"]
+
+    B --> C1["设计原则 1<br/>桌面优先"]
+    B --> C2["设计原则 2<br/>工作台优先"]
+    B --> C3["设计原则 3<br/>任务与思绪并存"]
+    B --> C4["设计原则 4<br/>云端为唯一真相源"]
+
+    C1 --> D["TodayDock 主工作台"]
+    C2 --> D
+    C3 --> D
+    C4 --> H
+
+    subgraph S1["主工作台的信息结构"]
+      D --> E1["Ought<br/>承载责任型任务"]
+      D --> E2["Mind Pad<br/>承载情绪 / 灵感 / 经验"]
+      D --> E3["Want<br/>承载主动探索型事项"]
+      D --> E4["时间线<br/>提供时间维度"]
+      E1 --> F1["长期任务<br/>把长期目标拆成阶段节点"]
+    end
+
+    D --> G["界面双态设计"]
+    subgraph S2["界面形态"]
+      G --> G1["工作台模式<br/>完整编辑与管理"]
+      G --> G2["组件模式<br/>桌面上的单卡片入口"]
+      G1 --> G2
+      G2 --> G1
+    end
+
+    D --> H["账号与云端数据层"]
+    subgraph S3["数据与身份逻辑"]
+      H --> H1["账号登录"]
+      H --> H2["云端初始化模板"]
+      H --> H3["多设备一致性"]
+      H --> H4["退出登录 / 注销账户"]
+    end
+
+    H --> I["最终产品价值<br/>让用户在桌面上持续看见并推进自己的主线"]
+          </div>
+        </div>
+        <div class="diagram-notes">
+          <div class="diagram-note">
+            <h4>核心判断</h4>
+            <p>TodayDock 不是为了多记几件事，而是为了让用户每天都能回到同一条主线。所以任务、长期目标、思绪和时间，不是分开的功能，而是同一个工作台里的不同层。</p>
+          </div>
+          <div class="diagram-note">
+            <h4>长期任务与 Mind Pad</h4>
+            <p>长期任务解决“大目标怎么拆开继续做”，Mind Pad 解决“暂时放不进任务里的内容放在哪里”。少了任何一边，工作台都不成立。</p>
+          </div>
+          <div class="diagram-note">
+            <h4>组件模式的位置</h4>
+            <p>组件模式不是另一个产品，也不是快捷方式。它只是工作台的另一种存在形态：平时缩成桌面上的一张卡片，需要时再回到完整工作台。</p>
+          </div>
+          <div class="diagram-note">
+            <h4>云端层的角色</h4>
+            <p>只要产品目标里有多设备登录和一致性，云端就不是补充项，而是底层规则。登录、模板初始化、同步、退出登录和注销账户，都要按这层规则来设计。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass diagram-section" id="logic-flow">
+        <h3>6. 关键用户流程图</h3>
+        <p class="section-copy">
+          用户从身份流程进入 TodayDock 后，默认落在完整工作台，再按需要切换到组件模式。退出登录与注销账户位于同一账户层级，但含义和风险完全不同，因此在流程上必须明确分开。
+        </p>
+        <div class="diagram-surface">
+          <div class="mermaid">
+flowchart TD
+    A["启动 TodayDock"] --> B{"是否已登录"}
+
+    B -- 否 --> C["Auth 流程"]
+    C --> C1["登录"]
+    C --> C2["注册"]
+    C --> C3["忘记密码"]
+    C3 --> C4["邮件回跳<br/>进入重设密码"]
+    C4 --> C1
+
+    B -- 是 --> D["进入工作台模式"]
+    C1 --> D
+    C2 --> D
+
+    subgraph S1["工作台模式"]
+      D --> E1["查看 Ought / Want / Mind Pad / 时间线"]
+      D --> E2["新增与编辑普通任务"]
+      D --> E3["管理长期任务与节点"]
+      D --> E4["记录 Mind Pad"]
+      D --> E5["点击『组件模式』"]
+    end
+
+    E5 --> F["进入组件模式"]
+
+    subgraph S2["组件模式"]
+      F --> F1["桌面上以单卡片形式持续存在"]
+      F --> F2["显示当前主线摘要"]
+      F --> F3["点击文件夹 icon 或主体<br/>返回工作台模式"]
+    end
+
+    F3 --> D
+
+    D --> G["账号面板"]
+    G --> G1["退出登录"]
+    G --> G2["注销账户"]
+    G2 --> G3["二次确认：删除所有云端数据"]
+
+    G1 --> C
+    G3 --> C
+          </div>
+        </div>
+        <div class="diagram-notes">
+          <div class="diagram-note">
+            <h4>主进入路径</h4>
+            <p>用户登录后先进入工作台，而不是直接进入组件模式。组件模式是用户在工作台里主动切换出来的缩略形态，不是默认入口。</p>
+          </div>
+          <div class="diagram-note">
+            <h4>忘记密码的归属</h4>
+            <p>忘记密码和重设密码都属于身份流程，不应该和主工作台同时出现。否则用户会在两个上下文之间来回跳，状态也容易混乱。</p>
+          </div>
+          <div class="diagram-note">
+            <h4>退出登录与注销账户</h4>
+            <p>退出登录只是结束当前会话，数据还在；注销账户会删掉账号和全部云端数据，所以必须单独确认，不能和普通退出混在一起。</p>
+          </div>
+          <div class="diagram-note">
+            <h4>工作台与组件模式</h4>
+            <p>工作台和组件模式不是两套系统，而是同一份内容的两种形态。前者负责编辑和管理，后者负责常驻桌面、随时返回。</p>
+          </div>
+        </div>
+        <div class="diagram-legend">
+          <div class="diagram-legend-item">
+            <strong>产品问题层</strong>
+            用来统一产品出发点：TodayDock 要解决的不是记录不足，而是主线容易丢失。
+          </div>
+          <div class="diagram-legend-item">
+            <strong>信息结构层</strong>
+            用来说明 Ought、Want、Mind Pad、时间线和长期任务分别承担什么职责。
+          </div>
+          <div class="diagram-legend-item">
+            <strong>形态切换层</strong>
+            用来说明工作台模式和组件模式是同一个产品的两种形态，不是两个割裂入口。
+          </div>
+          <div class="diagram-legend-item">
+            <strong>身份与数据层</strong>
+            用来说明账号、模板初始化、云端一致性和账户动作，都是产品逻辑的一部分。
+          </div>
+        </div>
+      </section>
+
+      <section class="glass" id="scope">
+        <h3>7. 范围定义</h3>
+        <div class="grid-3">
+          <div class="card">
+            <h4>P0：账户与数据</h4>
+            <ul>
+              <li>邮箱 + 密码注册</li>
+              <li>邮箱 + 密码登录</li>
+              <li>忘记密码</li>
+              <li>重设密码</li>
+              <li>退出登录</li>
+              <li>注销账户</li>
+              <li>Supabase 云端主数据源</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>P0：核心产品能力</h4>
+            <ul>
+              <li>Ought 列</li>
+              <li>中间主工作区</li>
+              <li>Want 列</li>
+              <li>时间线区域</li>
+              <li>普通任务与长期任务</li>
+              <li>节点与子节点拆分</li>
+              <li>Mind Pad 三类内容</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Out of Scope</h4>
+            <ul>
+              <li>团队协作</li>
+              <li>任务分享</li>
+              <li>评论、提及、多人编辑</li>
+              <li>复杂项目管理视图</li>
+              <li>大文件附件能力</li>
+              <li>正式商业化计费</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px;">
+          <h4>P1（建议在 MVP 后推进）</h4>
+          <ul>
+            <li>实时同步</li>
+            <li>更完整的设置页</li>
+            <li>更完整的 Widget 与主应用联动</li>
+            <li>多平台（iPhone / iPad / Web）扩展</li>
+            <li>更丰富的账户管理能力</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="glass" id="flows">
+        <h3>8. 用户流程</h3>
+        <div class="flow-block">
+          <div class="card">
+            <h4>6.1 新用户首次进入</h4>
+            <div class="flow-row">
+              <div class="step"><div class="num">Step 1</div><strong>打开 TodayDock</strong><span>未登录时进入登录层。</span></div>
+              <div class="step"><div class="num">Step 2</div><strong>完成注册并登录</strong><span>建立账号态并进入云端链路。</span></div>
+              <div class="step"><div class="num">Step 3</div><strong>云端写入初始模板</strong><span>为该用户生成首份结构化数据。</span></div>
+              <div class="step"><div class="num">Step 4</div><strong>进入主界面</strong><span>看到 Ought、Want、长期任务、Mind Pad 样例。</span></div>
+              <div class="step"><div class="num">Step 5</div><strong>开始编辑</strong><span>用户编辑、删除或新增自己的内容。</span></div>
+              <div class="step"><div class="num">Step 6</div><strong>持续使用</strong><span>后续所有设备打开均以云端内容为准。</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>6.2 已登录用户日常使用</h4>
+            <div class="flow-row">
+              <div class="step"><div class="num">Step 1</div><strong>打开应用</strong><span>恢复当前会话。</span></div>
+              <div class="step"><div class="num">Step 2</div><strong>拉取云端数据</strong><span>按账号获取任务、节点、Mind Pad 与偏好。</span></div>
+              <div class="step"><div class="num">Step 3</div><strong>渲染主界面</strong><span>主工作台以云端状态呈现。</span></div>
+              <div class="step"><div class="num">Step 4</div><strong>创建或编辑内容</strong><span>在 Ought / Want / Mind Pad 中进行操作。</span></div>
+              <div class="step"><div class="num">Step 5</div><strong>同步写入云端</strong><span>用户操作产生的变更回写云端。</span></div>
+              <div class="step"><div class="num">Step 6</div><strong>再次打开保持一致</strong><span>下次打开时仍以云端为准。</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>6.3 忘记密码</h4>
+            <div class="flow-row">
+              <div class="step"><div class="num">Step 1</div><strong>点击忘记密码</strong><span>用户从登录页进入密码恢复流程。</span></div>
+              <div class="step"><div class="num">Step 2</div><strong>输入邮箱</strong><span>发送恢复邮件。</span></div>
+              <div class="step"><div class="num">Step 3</div><strong>点击恢复链接</strong><span>通过 deep link 唤起 TodayDock。</span></div>
+              <div class="step"><div class="num">Step 4</div><strong>进入设置新密码页</strong><span>在 app 内完成，不依赖网页。</span></div>
+              <div class="step"><div class="num">Step 5</div><strong>提交新密码</strong><span>更新成功后重新建立有效 session。</span></div>
+              <div class="step"><div class="num">Step 6</div><strong>进入主应用</strong><span>旧登录界面应被替换，不得叠层。</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>6.4 注销账户</h4>
+            <div class="flow-row">
+              <div class="step"><div class="num">Step 1</div><strong>打开账号面板</strong><span>从左下角账户入口进入。</span></div>
+              <div class="step"><div class="num">Step 2</div><strong>点击注销账户</strong><span>进入高风险确认卡片。</span></div>
+              <div class="step"><div class="num">Step 3</div><strong>展示风险提示</strong><span>明确告知会永久删除全部云端数据。</span></div>
+              <div class="step"><div class="num">Step 4</div><strong>输入当前邮箱确认</strong><span>作为二次确认动作。</span></div>
+              <div class="step"><div class="num">Step 5</div><strong>执行云端删除</strong><span>通过 Edge Function 删除用户和关联数据。</span></div>
+              <div class="step"><div class="num">Step 6</div><strong>清会话并回登录页</strong><span>退出当前账号，不能残留旧状态。</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass" id="requirements">
+        <h3>9. 功能需求</h3>
+        <div class="matrix">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Requirement</th>
+                <th>Priority</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>FR-01</td><td>用户可通过邮箱和密码注册 TodayDock 账户</td><td class="p0">P0</td><td>内测阶段关闭邮箱确认</td></tr>
+              <tr><td>FR-02</td><td>用户可通过邮箱和密码登录</td><td class="p0">P0</td><td>登录后进入云端数据流程</td></tr>
+              <tr><td>FR-03</td><td>未登录用户不可进入真实主页面</td><td class="p0">P0</td><td>必须经过 auth gate</td></tr>
+              <tr><td>FR-04</td><td>新用户首次登录时，云端应初始化模板数据</td><td class="p0">P0</td><td>模板写入云端，不依赖本地</td></tr>
+              <tr><td>FR-05</td><td>已登录用户启动时应只以云端数据为准</td><td class="p0">P0</td><td>云端唯一真相</td></tr>
+              <tr><td>FR-06</td><td>用户可在 Ought / Want 中创建普通任务</td><td class="p0">P0</td><td>支持保存、取消</td></tr>
+              <tr><td>FR-07</td><td>用户可将任务设置为长期任务</td><td class="p0">P0</td><td>在编辑态中可见</td></tr>
+              <tr><td>FR-08</td><td>长期任务支持节点与子节点结构</td><td class="p0">P0</td><td>支持展开、收起、继续拆分</td></tr>
+              <tr><td>FR-09</td><td>用户可编辑已有任务</td><td class="p0">P0</td><td>单击进入再编辑</td></tr>
+              <tr><td>FR-10</td><td>用户可创建与编辑 Mind Pad 内容</td><td class="p0">P0</td><td>包含情绪、灵感、经验</td></tr>
+              <tr><td>FR-11</td><td>用户可管理情绪标签</td><td class="p0">P0</td><td>新增标签不覆盖已有选中标签</td></tr>
+              <tr><td>FR-12</td><td>用户可触发忘记密码流程</td><td class="p0">P0</td><td>邮件回跳到 app</td></tr>
+              <tr><td>FR-13</td><td>用户可在 app 内完成密码重设</td><td class="p0">P0</td><td>不依赖网页重设界面</td></tr>
+              <tr><td>FR-14</td><td>用户可退出登录</td><td class="p0">P0</td><td>保留数据，不删除账户</td></tr>
+              <tr><td>FR-15</td><td>用户可注销账户</td><td class="danger">P0</td><td>删除账号及所有云端数据</td></tr>
+              <tr><td>FR-16</td><td>注销账户前必须有二次确认与风险提示</td><td class="danger">P0</td><td>输入邮箱确认</td></tr>
+              <tr><td>FR-17</td><td>系统需提供账号入口与基础设置卡片</td><td>P1</td><td>本期只展示当前邮箱</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="glass" id="nfr">
+        <h3>10. 非功能要求</h3>
+        <div class="grid-2">
+          <div class="card">
+            <h4>性能</h4>
+            <ul>
+              <li>主界面首次渲染需要快速可见。</li>
+              <li>常驻空闲状态下 CPU 占用应接近 0。</li>
+              <li>网络请求失败时不应卡死主界面。</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>可靠性</h4>
+            <ul>
+              <li>登录、退出、密码重置、注销账户流程必须有明确结果反馈。</li>
+              <li>云端同步失败时必须可感知，不能静默吞掉关键错误。</li>
+              <li>重要账户动作不能依赖本地旧状态猜测结果。</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>数据一致性</h4>
+            <ul>
+              <li>云端为唯一主数据源。</li>
+              <li>本地缓存不参与初始化云端。</li>
+              <li>同一账号在不同设备打开时，应以云端内容为基准。</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>安全</h4>
+            <ul>
+              <li>客户端只使用 publishable / anon key。</li>
+              <li>删除账户等高风险能力通过服务端函数执行。</li>
+              <li>不将 service role key 放入客户端。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass" id="prototype">
+        <h3>11. 原型基线与技术方案</h3>
+        <div class="grid-2">
+          <div class="card">
+            <h4>视觉与交互基线</h4>
+            <ul>
+              <li>整体为浅色液态玻璃桌面工作台。</li>
+              <li>通过柔和磨砂、圆角、半透明层次建立产品识别度。</li>
+              <li>避免管理后台式密集界面。</li>
+              <li>悬停必须有克制但明确的反馈。</li>
+              <li>编辑框、弹层、账号面板等必须互斥。</li>
+              <li>多窗口/多状态切换必须单一，不允许 recovery/login/main 叠层共存。</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>技术方案</h4>
+            <ul>
+              <li>macOS 原生应用容器</li>
+              <li>主界面由 WebView 加载高保真前端界面</li>
+              <li>原生层处理窗口行为、账号链路、系统集成与打包</li>
+              <li>云端使用 Supabase Cloud、Email/Password Auth、Postgres、Edge Function</li>
+              <li>数据模型包括 profiles、tasks、task_nodes、mind_notes、mood_tags、user_preferences</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px;">
+          <h4>信息架构总览</h4>
+          <div class="proto-diagram">
+            <div class="proto-box"><strong>Auth Gate</strong><br />登录、注册、忘记密码、重设密码</div>
+            <div class="proto-box"><strong>主工作台</strong><br />Ought / Want / Middle / Timeline</div>
+            <div class="proto-box"><strong>任务结构</strong><br />普通任务 / 长期任务 / 节点 / 子节点</div>
+            <div class="proto-box"><strong>Mind Pad</strong><br />情绪 / 灵感 / 经验 / 标签</div>
+            <div class="proto-box"><strong>账号入口</strong><br />设置 / 退出登录 / 注销账户</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass" id="risks">
+        <h3>12. 风险与缓解</h3>
+        <div class="matrix">
+          <table>
+            <thead>
+              <tr>
+                <th>Risk</th>
+                <th>Probability</th>
+                <th>Impact</th>
+                <th>Mitigation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>登录与重置密码链路复杂，导致跳转异常</td><td>Medium</td><td>High</td><td>将 auth 状态机单窗收敛，统一由 app 接管 recovery 流程。</td></tr>
+              <tr><td>云端与本地状态混用导致多端数据不一致</td><td>High</td><td>High</td><td>明确云端唯一真相，禁止本地 fallback 污染云端。</td></tr>
+              <tr><td>WebView 架构在宽屏环境下易出现布局拉伸问题</td><td>Medium</td><td>Medium</td><td>明确宽屏收口与窗口级布局规则。</td></tr>
+              <tr><td>注销账户等高权限动作存在安全风险</td><td>Medium</td><td>High</td><td>通过 Edge Function + service role 处理，不在客户端执行。</td></tr>
+              <tr><td>玻璃风长期使用若层次失衡，会影响可读性</td><td>Medium</td><td>Medium</td><td>持续通过原型与实机调优阴影、边界和间距。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="glass" id="launch">
+        <h3>13. 上线计划与 MVP 定义</h3>
+        <div class="roadmap">
+          <div class="phase">
+            <div class="phase-tag">阶段一：封闭内测</div>
+            <div>
+              <h4>目标</h4>
+              <p>分发 macOS 内测包，验证注册、登录、密码重置、退出、注销等账户链路；验证新用户模板是否帮助用户快速理解产品；收集 Ought / Want / 长期任务 / Mind Pad 的结构反馈。</p>
+            </div>
+          </div>
+          <div class="phase">
+            <div class="phase-tag">阶段二：稳定性提升</div>
+            <div>
+              <h4>目标</h4>
+              <p>降低同步失败率，优化跨设备一致性，完善设置页，并进一步打磨布局适配与交互细节。</p>
+            </div>
+          </div>
+          <div class="phase">
+            <div class="phase-tag">阶段三：产品化推进</div>
+            <div>
+              <h4>目标</h4>
+              <p>补强多端路线，完成品牌官网与正式回调地址，准备公开测试所需的签名、公证与支持文档。</p>
+            </div>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:16px;">
+          <div class="card">
+            <h4>MVP 包含</h4>
+            <ul>
+              <li>账号注册与登录</li>
+              <li>忘记密码与重设密码</li>
+              <li>Ought / Want 基础任务</li>
+              <li>长期任务与节点</li>
+              <li>Mind Pad</li>
+              <li>云端主数据源</li>
+              <li>退出登录与注销账户</li>
+              <li>当前玻璃风桌面主界面</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>MVP 成功定义</h4>
+            <ul>
+              <li>新用户可以在 5 分钟内完成注册并进入主界面。</li>
+              <li>用户可以创建、编辑、删除或完成至少一条内容。</li>
+              <li>用户可以理解长期任务与 Mind Pad 的差异。</li>
+              <li>账户相关关键流程不出现阻断级错误。</li>
+              <li>真实内测用户愿意把 TodayDock 持续放在桌面使用。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass" id="questions">
+        <h3>14. Open Questions</h3>
+        <div class="card">
+          <ul>
+            <li>时间线在多设备同时使用时，是否需要实时同步而非仅靠重新进入刷新？</li>
+            <li>Widget 与主应用之间的云端关系是否要在下一期统一？</li>
+            <li>新用户模板是否需要按不同用户画像提供不同版本？</li>
+            <li>设置页后续是否加入主题、布局密度、同步状态等高级选项？</li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="foot">TodayDock 产品需求文档 · HTML 全展开版 · 2026-03-26</div>
+    </main>
+  </div>
+</body>
+</html>

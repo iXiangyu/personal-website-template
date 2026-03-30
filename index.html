@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>i香芋侠 | 数字创作者个人主页</title>
+    <link rel="stylesheet" href="./tools/neo-ui-kit/vendor/neobrutalismcss.min.css" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Lexend:wght@700;900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <!-- 背景装饰 -->
+    <div class="bg-shape bg-shape-a" aria-hidden="true"></div>
+    <div class="bg-shape bg-shape-b" aria-hidden="true"></div>
+
+    <!-- 胶囊导航 -->
+    <header class="site-header">
+      <nav class="top-nav">
+        <a href="#home" class="nb-navbar-link nav-link-pill">首页</a>
+        <a href="#about" class="nb-navbar-link nav-link-pill">关于我</a>
+        <a href="#creations" class="nb-navbar-link nav-link-pill">作品</a>
+        <a href="#home-contact" class="nb-navbar-link nav-link-pill">联系我</a>
+      </nav>
+      <a class="mail-btn" href="#home-contact">✉</a>
+    </header>
+
+    <main>
+      <!-- 首页区块 (Home) -->
+      <div class="view" id="home">
+        <!-- 核心介绍 (Hero) -->
+        <section class="hero" style="padding-top: 40px;">
+          <div class="hero-copy">
+            <p class="tag">HELLO WORLD</p>
+            <h1>
+              我是
+              <span class="highlight highlight-pink">i香芋侠</span>,
+              <br />
+              A Digital Creator,
+              <br />
+              努力成为 <span class="highlight highlight-blue">产品经理</span>
+            </h1>
+            <p class="muted" style="max-width: 480px; font-size: 1.1rem; line-height: 1.6; margin-top: 24px;">
+              RedNote Creator | Digital Creator | Aspiring PM<br>
+              Fixing the old world by day,creating a new world by night. _(ツ)_<br>
+              正在通往产品经理的进阶之路上 !!!
+            </p>
+            <div class="hero-actions" style="margin-top: 48px;">
+              <a class="btn-black home-main-btn" href="#about">
+                <span>👤</span> More about me
+              </a>
+            </div>
+          </div>
+          <div class="hero-card">
+            <div class="avatar-img">
+              <div class="avatar-empty" aria-hidden="true"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 组件试装：状态跑马灯 (nb-marquee) -->
+        <section class="home-status-marquee">
+          <div class="nb-marquee pale-yellow">
+            <div class="nb-marquee-content">
+              <span>策略产品经理求职中</span>
+              <span>用户增长产品经理方向</span>
+              <span>AI 产品经理方向</span>
+              <span>目标城市：上海 / 杭州</span>
+              <span aria-hidden="true">Looking forward 2026 暑期实习</span>
+              <span aria-hidden="true">策略产品经理求职中</span>
+              <span aria-hidden="true">用户增长产品经理方向</span>
+              <span aria-hidden="true">AI 产品经理方向</span>
+              <span aria-hidden="true">目标城市：上海 / 杭州</span>
+              <span>Looking forward 2026 暑期实习</span>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- 关于我区块 (About) -->
+      <div class="view" id="about">
+        <div class="section-head">
+          <p class="tag" style="margin-bottom: 20px;">ABOUT ME</p>
+          <h2 style="font-size: 4rem;">欢迎来到我的数字花园</h2>
+        </div>
+        <section class="recent-sketch-board">
+          <div class="recent-sketch-title">近日生活 | RECENT UPDATES</div>
+          <div class="recent-sketch-cards">
+            <article class="recent-sketch-card card-blue">
+              <div class="recent-sketch-icon">📘</div>
+              <h3>最近在学</h3>
+              <p>AI 工作流与产品增长</p>
+            </article>
+            <article class="recent-sketch-card card-pink">
+              <div class="recent-sketch-icon">📺</div>
+              <h3>最近在做</h3>
+              <p>个人主页 2.0 体验重构</p>
+            </article>
+            <article class="recent-sketch-card card-green">
+              <div class="recent-sketch-icon">🛠️</div>
+              <h3>最近在想</h3>
+              <p>修补与创造的平衡点</p>
+            </article>
+          </div>
+        </section>
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 80px; margin-top: 80px;">
+          <div>
+            <h3 style="font-size: 3rem; margin-bottom: 32px; font-weight: 900;">核心理念</h3>
+            <p class="muted" style="font-size: 1.4rem; line-height: 1.8; color: var(--ink);">
+              我致力于将严谨的逻辑与灵动的数字创作相结合。我不只是在寻找一个职位，而是在构建一个能够持续产出价值的系统。<br><br>
+              擅长在规则中寻找缝隙，在逻辑中注入创意。我深信，好的产品是修补世界碎片后的完美缝合。
+            </p>
+          </div>
+          <div class="timeline-col">
+            <h4 class="timeline-title">主线任务</h4>
+            <div class="timeline-item"><span>2026.01</span><p style="margin-top: 8px; font-weight: 800;">启动产品经理进阶计划</p></div>
+            <div class="timeline-item"><span>2026.03</span><p style="margin-top: 8px; font-weight: 800;">发布个人品牌 2.0 数字化空间</p></div>
+          </div>
+        </div>
+
+        <section class="about-dual-timeline about-zigzag">
+          <div class="about-dual-head">
+            <h3>成长时间线 / Ought to do & Want to do</h3>
+            <p>用交错节点记录阶段重点，节奏不做左右对称，而是更贴近真实推进过程。</p>
+          </div>
+          <div class="zigzag-track">
+            <article class="zigzag-item left ought">
+              <span class="zigzag-date">2024.06</span>
+              <h4>求学第一阶段</h4>
+              <p>毕业于郑州大学商学院，获得会计学学士学位。</p>
+            </article>
+
+            <article class="zigzag-item right ought">
+              <span class="zigzag-date">2025.04</span>
+              <h4>事务所实习</h4>
+              <p>第二段实习，来到北京华政税务师事务所进行了为期 3 个月的实习。</p>
+            </article>
+
+            <article class="zigzag-item left ought">
+              <span class="zigzag-date">2025.09</span>
+              <h4>求学第二阶段</h4>
+              <p>浙江大学经济学院税务专硕在读，2027.06 毕业。</p>
+            </article>
+
+            <article class="zigzag-item right want">
+              <span class="zigzag-date">2025.10</span>
+              <h4>逐梦的起点</h4>
+              <p>决心转行进入互联网行业，开始自学 SQL 准备面试数据运营岗。</p>
+            </article>
+
+            <article class="zigzag-item left want">
+              <span class="zigzag-date">2025.12</span>
+              <h4>第一段互联网实习</h4>
+              <p>非常幸运来到了滴滴开始我的第一段互联网实习，努力学习💪</p>
+            </article>
+
+            <article class="zigzag-item right want">
+              <span class="zigzag-date">2026.01</span>
+              <h4>接触 vibe coding</h4>
+              <p>带着对成为产品经理的好奇心，尝试了 vibe coding，制作了自己的第一个 App。</p>
+            </article>
+
+            <article class="zigzag-item left want">
+              <span class="zigzag-date">2026.03</span>
+              <h4>追逐下一段实习</h4>
+              <p>开始准备简历和项目，希望能找到产品岗的实习，成为产品经理！</p>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <!-- 作品区块 -->
+      <div class="view" id="creations">
+        <section class="home-vibe-section" style="margin-top: 0;">
+          <h2 class="home-vibe-title">
+            Some of My
+            <span>Vibe-coded Creations</span>
+          </h2>
+          <p class="home-vibe-subtitle">
+            我正在做的核心作品是一个任务与情绪并行管理的 ToDo 产品。
+          </p>
+
+          <div class="home-vibe-grid">
+            <a href="./2026-03-26-todaydock-prd-showcase.html" target="_blank" rel="noopener noreferrer" class="home-vibe-card home-vibe-card-link nb-card pale-yellow">
+              <div class="home-vibe-icon">📝</div>
+              <h3>Vibe ToDo App</h3>
+              <p>把 <b>ought to do</b>、<b>want to do</b> 和情绪便签整合在同一界面，兼顾执行效率与状态觉察。</p>
+              <span class="nb-button blue home-vibe-cta">体验交流 →</span>
+            </a>
+
+            <article class="home-vibe-card nb-card default">
+              <div class="home-vibe-icon" style="background:#f9a8d4;">⚙️</div>
+              <h3>当前版本重点</h3>
+              <p>1. 双清单任务视图（必须做/想做）<br>2. Mood Note 情绪记录<br>3. 每周复盘视图，追踪任务完成与情绪变化。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="home-articles-section" id="articles">
+          <div class="home-articles-head">
+            <div class="home-articles-title-wrap">
+              <div class="home-articles-title-shadow" aria-hidden="true"></div>
+              <h2 class="home-articles-title">Articles</h2>
+            </div>
+            <span class="home-articles-browse nb-button pale-yellow">Template Mode</span>
+          </div>
+          <div class="home-articles-grid" id="homeArticleGrid"></div>
+        </section>
+      </div>
+
+      <!-- 联系我区块：固定在整页最下方 -->
+      <div class="view" id="home-contact">
+        <section class="home-contact-bottom">
+          <div class="home-contact-grid">
+            <article class="home-contact-card home-contact-card-main nb-card default">
+              <div class="home-contact-copy">
+                <h3>联系我 / Let's Connect</h3>
+                <p>如果你正在找一个既能做策略也能落地执行的人，欢迎直接联系我。</p>
+                <p class="home-contact-meta">目标岗位：策略产品经理 / 用户增长产品经理 / AI 产品经理</p>
+                <p class="home-contact-meta">目标城市：上海 / 杭州 / 北京 ｜ Looking forward 2026 暑期实习</p>
+              </div>
+            </article>
+
+            <article class="home-contact-card home-contact-card-side nb-card pale-yellow">
+              <h4 class="home-contact-side-title">快速联系通道</h4>
+              <p class="home-contact-side-note">欢迎投递实习机会、合作邀约或产品讨论。</p>
+              <div class="home-contact-actions">
+                <a href="mailto:liukaiwen@zju.edu.cn" class="nb-button blue">Email</a>
+                <a href="https://github.com/iXiangyu" target="_blank" rel="noopener noreferrer" class="nb-button default">GitHub</a>
+                <a href="#" class="nb-button orange is-disabled" aria-disabled="true">小红书（待补充）</a>
+                <a href="#" class="nb-button orange is-disabled" aria-disabled="true">B站（待补充）</a>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+
+    </main>
+
+    <footer style="margin-top: 100px; padding-bottom: 60px; text-align: center; color: var(--muted); font-size: 1rem;">
+      &copy; 2026 i香芋侠. Inspired by Neo-brutalism & Logic.
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

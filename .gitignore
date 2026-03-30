@@ -1,0 +1,17 @@
+.DS_Store
+
+# Local backups
+*.backup.*
+index.backup.*
+styles.backup.*
+script.backup.*
+
+# Historical scratch files
+index-original.html
+index-v2.html
+styles-original.css
+styles-v2.css
+script-original.js
+script-v2.js
+original_site.html
+original_style.css
