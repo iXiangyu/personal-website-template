@@ -15,3 +15,7 @@ script-original.js
 script-v2.js
 original_site.html
 original_style.css
+
+# Dependencies
+node_modules/
+tools/neo-ui-kit/node_modules/
